@@ -1,5 +1,11 @@
 # Remote Commands
 
+## Run
+
+```
+$ go run main.go
+```
+
 ## Skills developed
 
 * Concurrency (channels, go routines)
