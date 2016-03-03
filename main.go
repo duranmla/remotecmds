@@ -6,6 +6,7 @@ import (
   "log"
   "net"
   "github.com/duranmla/remotecmds/cmdutil"
+  "github.com/duranmla/remotecmds/commands"
   connect "github.com/duranmla/remotecmds/net"
 )
 
@@ -32,6 +33,14 @@ func main() {
   ip := getLocalIP().String()
   fmt.Fprint(Stdout, "Username: ")
   username := cmdutil.ReadLine()
-  log.Printf("Connecting to %s as %s...\n", ip, username)
-  connect.ConnectToMachine(ip + ":22", username)
+  log.Printf("Connecting to %s as %s...", ip, username)
+  session, err := connect.ConnectToMachine(ip + ":22", username)
+
+  if err != nil {
+    panic("Failed to run: " + err.Error())
+  } else {
+    log.Println("Conection sucess!! <CTRL + C> to Exit\n")
+  }
+
+  commands.ListenCommands(session)
 }

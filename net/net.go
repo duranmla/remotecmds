@@ -1,7 +1,6 @@
 package net
 
 import (
-  "fmt"
   "bytes"
   "io/ioutil"
   "os/user"
@@ -26,7 +25,7 @@ func getKeyFile() (key ssh.Signer, err error){
   return
 }
 
-func ConnectToMachine(ip, username string) {
+func ConnectToMachine(ip, username string) (*ssh.Session, error){
   key, err := getKeyFile();
   if err !=nil {
     panic(err)
@@ -48,14 +47,9 @@ func ConnectToMachine(ip, username string) {
   if err != nil {
     panic("Failed to create session: " + err.Error())
   }
-  defer session.Close()
 
   var b bytes.Buffer
   session.Stdout = &b
-  e := session.Run("/usr/bin/whoami");
 
-  if e != nil {
-    panic("Failed to run: " + err.Error())
-  }
-  fmt.Println(b.String())
+  return session, err
 }
